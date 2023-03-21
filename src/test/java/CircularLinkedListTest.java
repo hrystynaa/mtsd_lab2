@@ -1,7 +1,6 @@
-package lab2;
-
 import org.junit.Before;
 import org.junit.Test;
+import lab2.CircularLinkedList;
 
 import static org.junit.Assert.*;
 

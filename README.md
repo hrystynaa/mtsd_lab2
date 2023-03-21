@@ -6,7 +6,7 @@ The first implementation of the list is singly linked list without using
 built-in collections. The refactored variant is linked list, that uses 
 built-in collections.
 
-###Variant
+### Variant
 The option is determined by the remainder of dividing the number of the gradebook 
 by 4:
 
@@ -48,7 +48,7 @@ mvn test
 ```
 > [Failed CI Commit](https://github.com/hrystynaa/mtsd_lab2/commit/e77101a1d9ca6b283ce1ba5e73155e79ec705e33)
 
-##Conclusion
+## Conclusion
 
 I believe that unit tests are very useful because they can save a 
 lot of time for developers first and foremost. For example, in my project, 

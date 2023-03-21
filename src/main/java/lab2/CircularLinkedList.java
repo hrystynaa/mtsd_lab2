@@ -1,204 +1,87 @@
 package lab2;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 public class CircularLinkedList {
-    private Node head;
+    private LinkedList<Character> list;
 
     public CircularLinkedList() {
-        head = null;
+        list = new LinkedList<Character>();
     }
 
     public boolean isEmpty() {
-        return head == null;
+        return list.isEmpty();
     }
 
     public int length() {
-        int len = 0;
-        if (!isEmpty()) {
-            Node cur = head;
-            do {
-                len++;
-                cur = cur.next;
-            } while (cur != head);
-        }
-        return len;
+        return list.size();
     }
 
     public void append(char element) {
-        Node node = new Node(element);
-        if (isEmpty()) {
-            head = node;
-            node.next = head;
-        } else {
-            Node cur = head;
-            while (cur.next != head) cur = cur.next;
-            cur.next = node;
-            node.next = head;
-        }
+        list.add(element);
     }
 
     public void insert(char element, int index) throws Exception {
         if (index < 0) throw new Exception("Error. Invalid index.");
-        Node node = new Node(element);
-        if (index == 0) {
-            if (isEmpty()) append(element);
-            else {
-                Node cur = head;
-                do {
-                    cur = cur.next;
-                } while (cur.next != head);
-            node.next = head;
-            head = node;
-            cur.next = head;
-            }
-        } else {
-            Node cur = head;
-            for (int i = 0; i < index - 1; i++) {
-                if (cur.next == head) throw new Exception("Error. Index is out of range.");
-                else cur = cur.next;
-            }
-            node.next = cur.next;
-            cur.next = node;
-        }
+        if (index > list.size()) throw new Exception("Error. Index is out of range.");
+        list.add(index, element);
     }
 
     public char delete(int index) throws Exception {
         if (index < 0) throw new Exception("Error. Invalid index.");
-        if (isEmpty()) throw new Exception("Error. List is empty.");
-        if (index == 0) {
-            Node cur = head;
-            Node delNode = head;
-            if (cur.next == head) head = null;
-            else {
-                do {
-                    cur = cur.next;
-                } while (cur.next != head);
-                head = head.next;
-                cur.next = head;
-            }
-            return delNode.data;
-        }
-        Node prev = null;
-        Node cur = head;
-        for (int i = 0; i < index; i++) {
-            if (cur.next != head) {
-                prev = cur;
-                cur = cur.next;
-            }
-            else throw new Exception("Error. Index is out of range.");
-        }
-        prev.next = cur.next;
-        return cur.data;
+        if (list.isEmpty()) throw new Exception("Error. List is empty.");
+        if (index >= list.size()) throw new Exception("Error. Index is out of range.");
+        return list.remove(index);
     }
 
     public void deleteAll(char element) {
-        if (isEmpty()) {
-            return;
-        }
-        while (head.data == element) {
-            if (head.next == head) {
-                head = null;
-                return;
-            } else {
-                Node cur = head;
-                do {
-                    cur = cur.next;
-                } while (cur.next != head);
-                head = head.next;
-                cur.next = head;
-            }
-        }
-        Node prev = head;
-        Node cur = head.next;
-
-        while (cur != head) {
-            if (cur.data == element) {
-                prev.next = cur.next;
-            }
-            prev = cur;
-            cur = cur.next;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == element) list.remove(i);
         }
     }
 
     public char get(int index) throws Exception {
         if (index < 0) throw new Exception("Error. Invalid index.");
-        if (isEmpty()) throw new Exception("Error. List is empty.");
-        if (index == 0) {
-            return head.data;
-        }
-        Node cur = head;
-        for (int i = 0; i < index; i++) {
-            if (cur.next != head) cur = cur.next;
-            else throw new Exception("Error. Index is out of range.");
-        }
-        return cur.data;
+        if (list.isEmpty()) throw new Exception("Error. List is empty.");
+        if (index >= list.size()) throw new Exception("Error. Index is out of range.");
+        return list.get(index);
     }
 
     public CircularLinkedList clone() {
         CircularLinkedList linkedList = new CircularLinkedList();
-        if (isEmpty()) return linkedList;
-        Node cur = head;
-        linkedList.append(cur.data);
-        do {
-            cur = cur.next;
-            linkedList.append(cur.data);
-        } while (cur.next != head);
+        if (list.isEmpty()) return linkedList;
+        for (char element : list) {
+            linkedList.append(element);
+        }
         return linkedList;
     }
 
     public void reverse() {
-        Node prev = null;
-        Node cur = head;
-        Node next = null;
-        if(isEmpty()) return;
-        do {
-            next = cur.next;
-            cur.next = prev;
-            prev = cur;
-            cur = next;
-        } while (cur != head);
-        head = prev;
-        cur.next = head;
-
+        if(list.isEmpty()) return;
+        LinkedList<Character> reversedList = new LinkedList<Character>();
+        while(!list.isEmpty()) {
+            reversedList.addFirst(list.removeFirst());
+        }
+        list = reversedList;
     }
 
     public int findFirst(char element) {
-        if (isEmpty()) {
-            return -1;
-        }
-        int index = 0;
-        Node cur = head;
-        do {
-            if (cur.data == element) return index;
-            index++;
-            cur = cur.next;
-        } while (cur.next != head);
-            return -1;
+        return list.indexOf(element);
     }
 
     public int findLast(char element) {
-        if (isEmpty()) {
-            return -1;
-        }
-        int lastIndex = -1;
-        int index = 0;
-        Node cur = head;
-        do {
-            if (cur.data == element) lastIndex = index;
-            cur = cur.next;
-            index++;
-        } while (cur != head);
-        return lastIndex;
+        return list.lastIndexOf(element);
     }
 
     public void clear() {
-        head = null;
+        list.clear();
     }
 
     public void extend(CircularLinkedList elements) {
-        Node cur = elements.head;
-        do {
-            this.append(cur.data);
-            cur = cur.next;
-        } while (cur != elements.head);
+        if(elements.isEmpty()) return;
+        for(Character element : elements.list) {
+            list.addLast(element);
+        }
     }
 }

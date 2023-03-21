@@ -13,12 +13,13 @@ public class CircularLinkedList {
 
     public int length() {
         int len = 0;
-        if (isEmpty()) return len;
-        Node cur = head;
-        do {
-            len++;
-            cur = cur.next;
-        } while (cur != head);
+        if (!isEmpty()) {
+            Node cur = head;
+            do {
+                len++;
+                cur = cur.next;
+            } while (cur != head);
+        }
         return len;
     }
 
@@ -27,7 +28,6 @@ public class CircularLinkedList {
         if (isEmpty()) {
             head = node;
             node.next = head;
-
         } else {
             Node cur = head;
             while (cur.next != head) cur = cur.next;
@@ -50,15 +50,15 @@ public class CircularLinkedList {
             head = node;
             cur.next = head;
             }
-            return;
+        } else {
+            Node cur = head;
+            for (int i = 0; i < index - 1; i++) {
+                if (cur.next == head) throw new Exception("Error. Index is out of range.");
+                else cur = cur.next;
+            }
+            node.next = cur.next;
+            cur.next = node;
         }
-        Node cur = head;
-        for (int i = 0; i < index - 1; i++) {
-            if (cur.next == head) throw new Exception("Error. Index is out of range.");
-            else cur = cur.next;
-        }
-        node.next = cur.next;
-        cur.next = node;
     }
 
     public char delete(int index) throws Exception {
@@ -167,12 +167,12 @@ public class CircularLinkedList {
         }
         int index = 0;
         Node cur = head;
-        while (cur.next != head) {
+        do {
             if (cur.data == element) return index;
             index++;
             cur = cur.next;
-        }
-        return -1;
+        } while (cur.next != head);
+            return -1;
     }
 
     public int findLast(char element) {

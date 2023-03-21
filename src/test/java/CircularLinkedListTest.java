@@ -301,6 +301,12 @@ public class CircularLinkedListTest {
     }
 
     @Test
+    public void findFirstSingle() {
+        linkedList.append('t');
+        assertEquals(0,linkedList.findFirst('t'));
+    }
+
+    @Test
     public void findFirstNotFound() {
         fill(linkedList);
         linkedList.append('t');
@@ -319,6 +325,13 @@ public class CircularLinkedListTest {
         assertEquals(8,linkedList.findLast('t'));
 
     }
+
+    @Test
+    public void findLastSingle() {
+        linkedList.append('t');
+        assertEquals(0,linkedList.findLast('t'));
+    }
+
 
     @Test
     public void findLastNotFound() {
